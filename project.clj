@@ -11,6 +11,6 @@
     :builds [{
       :source-path "src/cljs"
       :compiler {
-        :output-to "resources/public/cube.js"
+        :output-to "resources/public/js/cube.js"
         :optimizations :whitespace
         :pretty-print true}}]})
