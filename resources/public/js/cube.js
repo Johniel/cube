@@ -20210,91 +20210,39 @@ cljs.core.UUID.prototype.toString = function() {
 cljs.core.UUID;
 goog.provide("cube.webgl_cube");
 goog.require("cljs.core");
-if(cljs.core.not.call(null, Detector.webgl)) {
-  Detector.addGetWebGLMessage.call(null)
-}else {
-}
-cube.webgl_cube.init = function init() {
-  var camera = function() {
-    var c = new THREE.PerspectiveCamera;
-    c.fov = 75;
-    c.aspect = window.innerWidth / window.innerHeight;
-    c.near = 1;
-    c.far = 1E4;
-    c.position = new THREE.Vector3(0, 0, 1E3);
-    return c
-  }();
-  var geometry = new THREE.CubeGeometry(200, 200, 200);
-  var material = new THREE.MeshBasicMaterial({color:16711680, wireframe:true});
-  var mesh = new THREE.Mesh(geometry, material);
-  var scene = function() {
-    var s = new THREE.Scene;
-    s.add(mesh);
-    return s
-  }();
-  var renderer = function() {
-    var r = new THREE.WebGLRenderer;
-    r.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(r.domElement);
-    return r
-  }();
-  return cljs.core.vector.call(null, renderer, scene, camera, mesh)
-};
-cube.webgl_cube.animate = function animate(p__12098) {
-  var vec__12100 = p__12098;
-  var renderer = cljs.core.nth.call(null, vec__12100, 0, null);
-  var scene = cljs.core.nth.call(null, vec__12100, 1, null);
-  var camera = cljs.core.nth.call(null, vec__12100, 2, null);
-  var mesh = cljs.core.nth.call(null, vec__12100, 3, null);
-  window.requestAnimationFrame.call(null, cube.webgl_cube.animate);
-  return renderer.render(scene, camera)
-};
-cube.webgl_cube.main = function main() {
-  cube.webgl_cube.animate.call(null, cube.webgl_cube.init.call(null));
-  return document.write("\x3cp\x3eWebGL Cube\x3c/p\x3e")
-};
-goog.exportSymbol("cube.webgl_cube.main", cube.webgl_cube.main);
 goog.provide("cube.simple_cube");
 goog.require("cljs.core");
-cube.simple_cube.init = function init() {
-  var camera__6068 = function() {
-    var c__6067 = new THREE.PerspectiveCamera;
-    c__6067.fov = 75;
-    c__6067.aspect = window.innerWidth / window.innerHeight;
-    c__6067.near = 1;
-    c__6067.far = 1E4;
-    c__6067.position = new THREE.Vector3(0, 0, 1E3);
-    return c__6067
-  }();
-  var geometry__6069 = new THREE.CubeGeometry(200, 200, 200);
-  var material__6070 = new THREE.MeshBasicMaterial({color:16711680, wireframe:true});
-  var mesh__6071 = new THREE.Mesh(geometry__6069, material__6070);
-  var scene__6073 = function() {
-    var s__6072 = new THREE.Scene;
-    s__6072.add(mesh__6071);
-    return s__6072
-  }();
-  var renderer__6075 = function() {
-    var r__6074 = new THREE.CanvasRenderer;
-    r__6074.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(r__6074.domElement);
-    return r__6074
-  }();
-  return cljs.core.PersistentVector.fromArray([renderer__6075, scene__6073, camera__6068, mesh__6071], true)
-};
-cube.simple_cube.animate = function animate(p__6076) {
-  var vec__6083__6084 = p__6076;
-  var renderer__6085 = cljs.core.nth.call(null, vec__6083__6084, 0, null);
-  var scene__6086 = cljs.core.nth.call(null, vec__6083__6084, 1, null);
-  var camera__6087 = cljs.core.nth.call(null, vec__6083__6084, 2, null);
-  var mesh__6088 = cljs.core.nth.call(null, vec__6083__6084, 3, null);
+cube.simple_cube.camera = function() {
+  var c = new THREE.PerspectiveCamera;
+  c.fov = 75;
+  c.aspect = window.innerWidth / window.innerHeight;
+  c.near = 1;
+  c.far = 1E4;
+  c.position = new THREE.Vector3(0, 0, 1E3);
+  return c
+}();
+cube.simple_cube.geometry = new THREE.CubeGeometry(200, 200, 200);
+cube.simple_cube.material = new THREE.MeshBasicMaterial({color:16711680, wireframe:true});
+cube.simple_cube.mesh = new THREE.Mesh(cube.simple_cube.geometry, cube.simple_cube.material);
+cube.simple_cube.scene = function() {
+  var s = new THREE.Scene;
+  s.add(cube.simple_cube.mesh);
+  return s
+}();
+cube.simple_cube.renderer = function() {
+  var r = new THREE.CanvasRenderer;
+  r.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(r.domElement);
+  return r
+}();
+cube.simple_cube.animate = function animate() {
   window.requestAnimationFrame.call(null, cube.simple_cube.animate);
-  mesh__6088.rotation.x = 0.01 + mesh__6088.rotation.x;
-  mesh__6088.rotation.y = 0.02 + mesh__6088.rotation.y;
-  return renderer__6085.render(scene__6086, camera__6087)
+  cube.simple_cube.mesh.rotation.x = 0.01 + cube.simple_cube.mesh.rotation.x;
+  cube.simple_cube.mesh.rotation.y = 0.02 + cube.simple_cube.mesh.rotation.y;
+  return cube.simple_cube.renderer.render(cube.simple_cube.scene, cube.simple_cube.camera)
 };
 cube.simple_cube.main = function main() {
-  cube.simple_cube.animate.call(null, cube.simple_cube.init.call(null));
+  cube.simple_cube.animate.call(null);
   return document.write("\x3cp\x3eSimple Cube\x3c/p\x3e")
 };
 goog.exportSymbol("cube.simple_cube.main", cube.simple_cube.main);
