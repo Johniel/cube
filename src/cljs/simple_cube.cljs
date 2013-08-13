@@ -1,17 +1,16 @@
 (ns cube.simple-cube)
 
 (defn init []
-  (let [camera (let [c (THREE/PerspectiveCamera.)]
-                 (do (set! (.-fov    c) 75)
-                     (set! (.-aspect c) (/ window/innerWidth window/innerHeight))
-                     (set! (.-near   c) 1)
-                     (set! (.-far    c) 10000)
-                     (set! (.-position c) (THREE/Vector3. 0 0 1000))
+  (let [camera (let [c (THREE/PerspectiveCamera. 75
+                                                 (/ window/innerWidth window/innerHeight)
+                                                 1
+                                                 10000)]
+                 (do (set! (.-position c) (THREE/Vector3. 0 0 1000))
                      c))
 
         geometry (THREE/CubeGeometry. 200 200 200)
 
-        material (THREE/MeshBasicMaterial. (js* "{ color: 0xff0000, wireframe: true }"))
+        material (THREE/MeshBasicMaterial. (js* "{ color: 0xffff00, wireframe: true }"))
 
         mesh (THREE/Mesh. geometry material)
 
