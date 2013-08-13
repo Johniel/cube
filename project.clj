@@ -4,13 +4,11 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [org.clojure/clojurescript "0.0-1450"]]
+                 [org.clojure/clojurescript "0.0-1847"]]
   :plugins [[lein-cljsbuild "0.3.2"]]
   :source-paths ["src/clj"]
-  :cljsbuild {
-    :builds [{
-      :source-path "src/cljs"
-      :compiler {
-        :output-to "resources/public/js/cube.js"
-        :optimizations :whitespace
-        :pretty-print true}}]})
+  :cljsbuild {:builds
+              [{:source-paths ["src/cljs"],
+                :compiler {:pretty-print true,
+                           :output-to "resources/public/js/cube.js",
+                           :optimizations :whitespace}}]})
