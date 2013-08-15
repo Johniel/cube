@@ -1,4 +1,5 @@
-(ns cube.fancy-cube)
+(ns cube.fancy-cube
+  (:use [cube.speed :only [change-speed get-speed-x get-speed-y]]))
 
 (if-not Detector/webgl
   (Detector/addGetWebGLMessage))
@@ -71,9 +72,10 @@
         renderer (make-renderer)]
     (fn animate []
       (let [t (* 0.001 (Date/now))]
-        (do (window/requestAnimationFrame animate)
-            (set! (.-x (.-rotation mesh)) (* 2.0 t))
-            (set! (.-y (.-rotation mesh)) (* 0.9 t))
+        (do (change-speed)
+            (window/requestAnimationFrame animate)
+            (set! (.-x (.-rotation mesh)) (* (get-speed-x) t))
+            (set! (.-y (.-rotation mesh)) (* (get-speed-y) t))
             (.render renderer scene camera))))))
 
 (defn ^:export main []
