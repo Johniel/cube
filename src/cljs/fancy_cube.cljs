@@ -1,5 +1,6 @@
 (ns cube.fancy-cube
-  (:use [cube.speed :only [change-speed get-speed-x get-speed-y]]))
+  (:use [cljs.core.async :only [chan <! >! put! alts! alts!! timeout]])
+  (:use-macros [cljs.core.async.macros :only [go alt!]]))
 
 (if-not Detector/webgl
   (Detector/addGetWebGLMessage))
@@ -63,20 +64,27 @@
         (.add s (THREE/AmbientLight. 0x444444))
         s)))
 
+(def input-chan
+  (let [c (chan)]
+    (.addEventListener js/document "keydown" #(put! c (.-keyCode %)))
+    c))
+
 (defn init []
   (let [camera (make-camera)
         geometry (THREE/CubeGeometry. 200 200 200)
         material (make-material)
         mesh (make-mesh)
         scene (make-scene mesh)
-        renderer (make-renderer)]
+        renderer (make-renderer)
+        t (* 0.001 (Date/now))]
     (fn animate []
-      (let [t (* 0.001 (Date/now))]
-        (do (change-speed)
+      (go (let [[key-code ch] (alts! [input-chan (timeout 1)])]
+            (let [x 0.01
+                  y (if (= input-chan ch) 0.2 0.02)]
             (window/requestAnimationFrame animate)
-            (set! (.-x (.-rotation mesh)) (* (get-speed-x) t))
-            (set! (.-y (.-rotation mesh)) (* (get-speed-y) t))
-            (.render renderer scene camera))))))
+            (set! (.-x (.-rotation mesh)) (+ x (.-x (.-rotation mesh))))
+            (set! (.-y (.-rotation mesh)) (+ y (.-y (.-rotation mesh))))
+            (.render renderer scene camera)))))))
 
 (defn ^:export main []
   ((init))
